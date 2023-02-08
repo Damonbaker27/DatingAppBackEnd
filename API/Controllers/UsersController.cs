@@ -14,21 +14,19 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
 
-
         //dependancy injection for data context
         public UsersController(DataContext context )
         {
             _context = context;
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
 
             return Ok(users);
-
         }
 
 

@@ -62,7 +62,6 @@ app.UseAuthentication();
 // looks at what user is allowed to do.
 app.UseAuthorization();
 
-
 app.MapControllers();
 
 app.Run();
