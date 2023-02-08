@@ -16,7 +16,7 @@ namespace API.Controllers
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
 
-        //Inject datacontext class into 
+        //Inject datacontext class into controller 
         public AccountController(DataContext context, ITokenService tokenService)
         {
             _context = context;
@@ -50,7 +50,7 @@ namespace API.Controllers
 
         }
 
-        [HttpPost("login")]
+        [HttpPost("login")] // POST: api/account/login
         public async Task<ActionResult<UserDto>> login(LoginDto loginDto)
         {
             
@@ -77,14 +77,10 @@ namespace API.Controllers
         }
 
 
-
-
         private async Task<bool> UserExists(string userName)
         {
             return await _context.Users.AnyAsync(x => x.UserName == userName.ToLower());
         }
-
-
 
 
     }
