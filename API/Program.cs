@@ -1,6 +1,7 @@
 using API.Data;
 using API.Extensions;
 using API.Interface;
+using API.Middleware;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +23,18 @@ builder.Services.AddIdentityServices(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+//use the new middleware
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+//if (app.Environment.IsDevelopment())
+//{
+
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+
+//}
 
 
 //Middleware for building request pipeline.
