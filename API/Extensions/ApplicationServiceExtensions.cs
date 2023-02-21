@@ -20,6 +20,8 @@ namespace API.Extensions
 
             services.AddCors(options => options.AddPolicy("DefaultCors", policy =>
                 policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+            
+            services.AddScoped<IUserRepository, UserRepository>();
 
 
             return services;

@@ -28,13 +28,13 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
 
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 
-//}
+}
 
 
 //Middleware for building request pipeline.
@@ -50,5 +50,21 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+
+var service = scope.ServiceProvider;
+
+try
+{
+	var context = service.GetRequiredService<DataContext>();
+	await context.Database.MigrateAsync();
+	await Seed.SeedUsers(context);
+}
+catch (Exception ex)
+{
+	var logger = service.GetService<ILogger<Program>>();
+	logger.LogError(ex, "An error occurred during migration");
+}
 
 app.Run();
