@@ -25,7 +25,8 @@ namespace API.Data
 
         public async Task<AppUser> GetByNameAsync(string username)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+            var user = await _context.Users.Include(p => p.Photos)
+                .SingleOrDefaultAsync(x => x.UserName == username);
 
             return user == null ? null : user;
 
@@ -33,19 +34,19 @@ namespace API.Data
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.Include(x => x.Photos).ToListAsync();
 
             return users == null ? null : users;
         }
 
-        public Task<bool> SaveAllAsync()
+        public async Task<bool> SaveAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(AppUser user)
         {
-            throw new NotImplementedException();
+            _context.Entry(user).State = EntityState.Modified;
         }
     }
 }
