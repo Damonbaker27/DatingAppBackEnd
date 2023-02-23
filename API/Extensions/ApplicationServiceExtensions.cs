@@ -16,15 +16,12 @@ namespace API.Extensions
                 options.UseSqlServer(config.GetConnectionString("DatingAppConnectionString"));
             });
 
-            services.AddScoped<ITokenService, TokenService>();
-
             services.AddCors(options => options.AddPolicy("DefaultCors", policy =>
                 policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
             
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<ITokenService, TokenService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
             return services;
         }
