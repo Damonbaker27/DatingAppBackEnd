@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.DTO;
+using API.Entities;
 using API.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -15,7 +16,7 @@ namespace API.Data
         }
 
 
-        public async Task<AppUser> GetByIdAsync(int id)
+        public async Task<MemberDTO> GetByIdAsync(int id)
         {
            var user = await _context.Users.FindAsync(id);
 
@@ -23,7 +24,7 @@ namespace API.Data
 
         }
 
-        public async Task<AppUser> GetByNameAsync(string username)
+        public async Task<MemberDTO> GetByNameAsync(string username)
         {
             var user = await _context.Users.Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == username);
@@ -32,7 +33,7 @@ namespace API.Data
 
         }
 
-        public async Task<IEnumerable<AppUser>> GetUsersAsync()
+        public async Task<IEnumerable<MemberDTO>> GetUsersAsync()
         {
             var users = await _context.Users.Include(x => x.Photos).ToListAsync();
 
@@ -44,7 +45,7 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Update(AppUser user)
+        public void Update(MemberDTO user)
         {
             _context.Entry(user).State = EntityState.Modified;
         }

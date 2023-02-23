@@ -1,4 +1,5 @@
 ﻿using API.Data;
+using API.DTO;
 using API.Entities;
 using API.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,7 @@ namespace API.Controllers
 
        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
         {
             return Ok(await _userRepository.GetUsersAsync());
            
@@ -32,7 +33,7 @@ namespace API.Controllers
 
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<AppUser>> GetUser(string username)
+        public async Task<ActionResult<MemberDTO>> GetUser(string username)
         {
             return Ok(await _userRepository.GetByNameAsync(username));
           
