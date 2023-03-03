@@ -170,23 +170,42 @@
             }
         ]
     },
-    {
-        "UserName": "Davis",
-        "Gender": "male",
-        "DateOfBirth": "1978-03-20",
-        "KnownAs": "Davis",
-        "Created": "2020-02-25",
-        "LastActive": "2020-06-11",
-        "Introduction": "Voluptate sunt adipisicing ea nisi ex ullamco veniam dolor. Dolor do et exercitation in. Aute enim pariatur amet commodo. Deserunt consectetur quis culpa aliqua voluptate ipsum exercitation exercitation exercitation ea aliqua sunt.\r\n",
-        "LookingFor": "Do do minim est incididunt minim qui aliqua nulla pariatur culpa pariatur culpa non. Aliquip esse quis ullamco sint voluptate. Eiusmod reprehenderit nostrud elit eu. Sit est incididunt elit excepteur eu non. Non tempor labore nisi consequat excepteur magna non velit. Nostrud labore ex nostrud magna adipisicing aute exercitation ad in incididunt pariatur anim. Officia dolor proident nulla laboris quis.\r\n",
-        "Interests": "Labore consectetur labore ut nulla voluptate nulla quis labore tempor dolor laborum.",
-        "City": "Lupton",
-        "Country": "Luxembourg",
-        "Photos": [
-            {
-                "Url": "https://randomuser.me/api/portraits/men/93.jpg",
-                "IsMain": true
-            }
-        ]
-    }
+  {
+    "UserName": "Davis",
+    "Gender": "male",
+    "DateOfBirth": "1978-03-20",
+    "KnownAs": "Davis",
+    "Created": "2020-02-25",
+    "LastActive": "2020-06-11",
+    "Introduction": "Voluptate sunt adipisicing ea nisi ex ullamco veniam dolor. Dolor do et exercitation in. Aute enim pariatur amet commodo. Deserunt consectetur quis culpa aliqua voluptate ipsum exercitation exercitation exercitation ea aliqua sunt.\r\n",
+    "LookingFor": "Do do minim est incididunt minim qui aliqua nulla pariatur culpa pariatur culpa non. Aliquip esse quis ullamco sint voluptate. Eiusmod reprehenderit nostrud elit eu. Sit est incididunt elit excepteur eu non. Non tempor labore nisi consequat excepteur magna non velit. Nostrud labore ex nostrud magna adipisicing aute exercitation ad in incididunt pariatur anim. Officia dolor proident nulla laboris quis.\r\n",
+    "Interests": "Labore consectetur labore ut nulla voluptate nulla quis labore tempor dolor laborum.",
+    "City": "Lupton",
+    "Country": "Luxembourg",
+    "Photos": [
+      {
+        "Url": "https://randomuser.me/api/portraits/men/93.jpg",
+        "IsMain": true
+      }
+    ]
+  },
+  {
+    "UserName": "Matt Lucek",
+    "Gender": "Male",
+    "DateOfBirth": "1996-06-26",
+    "KnownAs": "Dirty Matt",
+    "Created": "2019-12-09",
+    "LastActive": "2020-05-06",
+    "Introduction": "Meet Matt, a gregarious and talkative individual who delights in striking up conversations with others. Whether it's with his closest friends or strangers he's just met, Matt has a knack for making people feel comfortable and engaged. One of Matt's favorite ways to unwind is by cracking open a cold bottle of Old English, his go-to malt liquor. He savors its rich, robust taste and the way it complements his other beloved pastime: watching Harry Potter movies.When he's not immersed in the wizarding world on the screen, you can find Matt holding court at his local hangout, chatting enthusiastically with anyone within earshot. With his booming voice, he always seems to be the life of the party, captivating his listeners with his latest tales and exploits in the marketing field job search.\r\n",
+    "LookingFor": "In a potential partner, Matt would be drawn to a woman who is outgoing and confident, someone who isn't afraid to let out a big ol' cackle and make a scene. He loves goofing around and making silly jokes, so a partner who can match his energy and keep up with his zany humor would be a perfect match. Matt is also a big fan of all things Harry Potter and wizardry, and he needs a partner who can get lost in the magical world with him. Someone who's not afraid to polish his wand and cast a spell.\r\n",
+    "Interests": "Watching Harry Potter movies, eating out three times a day, talking so loudly so that you can hear him from the basement and applying to 15 jobs a day.",
+    "City": "Selkirk",
+    "Country": "Canada",
+    "Photos": [
+      {
+        "Url": "assets/images/matt.jpg",
+        "IsMain": true
+      }
+    ]
+  }
 ]

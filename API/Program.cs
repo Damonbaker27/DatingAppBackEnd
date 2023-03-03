@@ -18,6 +18,8 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddApplicationServices(builder.Configuration);
+
+//add JWT authentication
 builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
@@ -40,10 +42,11 @@ if (app.Environment.IsDevelopment())
 //Middleware for building request pipeline.
 app.UseHttpsRedirection();
 
-//use cors policy
+//use CORS policy
 app.UseCors("DefaultCors");
 
 // checks for valid token.
+
 app.UseAuthentication();
 
 // looks at what user is allowed to do.
@@ -57,6 +60,7 @@ var service = scope.ServiceProvider;
 
 try
 {
+	//retrive data context and create database/apply all migrations
 	var context = service.GetRequiredService<DataContext>();
 	await context.Database.MigrateAsync();
 	await Seed.SeedUsers(context);

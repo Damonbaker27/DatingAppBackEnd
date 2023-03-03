@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -40,6 +41,26 @@ namespace API.Controllers
         {
             return await _userRepository.GetMemberAsync(username);           
           
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            //pull username out of the jwt token claim.
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = await _userRepository.GetByNameAsync(username);
+
+            if (user == null) return NotFound();
+
+            //updating user entity properties with new dto ones.
+            _mapper.Map(memberUpdateDto, user);
+
+            //return a 204 status code
+            if(await _userRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("User updated failed.");    
+
         }
 
 
