@@ -19,12 +19,14 @@ namespace API.Controllers
         private readonly DataContext _context;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
         //dependancy injection for data context
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
        
@@ -62,6 +64,7 @@ namespace API.Controllers
             return BadRequest("User updated failed.");    
 
         }
+
 
 
         
