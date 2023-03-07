@@ -30,6 +30,7 @@ namespace API.Data
 
         public async Task<AppUser> GetByNameAsync(string username)
         {
+            //eagerly load the photos as well.
             var user = await _context.Users.Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == username);
 

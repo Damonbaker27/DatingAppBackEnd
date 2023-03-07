@@ -23,8 +23,10 @@ namespace API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            //add setting from config file to services container
+            
+            //add settings cloudinary config file to services container
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            
             //allow photoservice to be injectable.
             services.AddScoped<IPhotoService, PhotoService>();
 

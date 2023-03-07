@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTO;
 using API.Entities;
+using API.Extensions;
 using API.Interface;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -47,11 +48,8 @@ namespace API.Controllers
 
         [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
-        {
-            //pull username out of the jwt token claim.
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            var user = await _userRepository.GetByNameAsync(username);
+        {   
+            var user = await _userRepository.GetByNameAsync(User.GetUsername());
 
             if (user == null) return NotFound();
 
@@ -62,6 +60,40 @@ namespace API.Controllers
             if(await _userRepository.SaveAllAsync()) return NoContent();
 
             return BadRequest("User updated failed.");    
+
+        }
+
+        [HttpPost("add-photo")]
+        public async Task<ActionResult<PhotoDTO>>AddPhoto(IFormFile file)
+        {
+            //checks if user exists
+            var user = await _userRepository.GetByNameAsync(User.GetUsername());
+            if (user == null) return NotFound();
+
+            //check if photo upload is successful.
+            var result = await _photoService.AddPhotoAsync(file);
+            
+            if( result.Error!= null ) return BadRequest(result.Error.Message);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+
+            //checks if photo is the first one
+            if(user.Photos.Count == 0)
+            {
+                photo.IsMain= true;
+            }
+           
+            user.Photos.Add(photo);
+
+            //return the mapped Photo DTO
+            if (await _userRepository.SaveAllAsync()) return _mapper.Map<PhotoDTO>(photo);
+
+            return BadRequest("Issue while adding photo");
+
 
         }
 
