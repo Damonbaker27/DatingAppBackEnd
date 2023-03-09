@@ -95,13 +95,66 @@ namespace API.Controllers
                 return CreatedAtAction(nameof(GetUser), 
                     new { username = user.UserName }, _mapper.Map<PhotoDTO>(photo));
             }
-            
-            
+                   
             return BadRequest("Issue while adding photo");
-
 
         }
 
+
+        [HttpPut("set-main-photo/{photoId}")]
+        public async Task<ActionResult> SetMainPhoto(int photoId)
+        {        
+
+            AppUser user = await _userRepository.GetByNameAsync(User.GetUsername());
+
+            if (user == null) return NotFound();
+
+            Photo photo = user.Photos.SingleOrDefault(x => x.Id == photoId);
+
+            if (photo == null) return NotFound();
+
+            if (photo.IsMain == true) return BadRequest("photo already is main");
+
+            Photo currentMain = user.Photos.SingleOrDefault(x => x.IsMain == true);
+            
+            if(currentMain != null) currentMain.IsMain = false;
+
+            photo.IsMain = true;
+
+            if (await _userRepository.SaveAllAsync()) return NoContent();                        
+
+            return BadRequest("There was an error updating photo");        
+
+        }
+
+        [HttpDelete("delete-photo/{photoId}")]
+        public async Task<ActionResult> DeletePhoto(int photoId)
+        {
+
+            var user = await _userRepository.GetByNameAsync(User.GetUsername());
+
+            if (user == null) NotFound("User does not exist");
+
+            Photo photo = user.Photos.SingleOrDefault(x => x.Id == photoId);
+
+            if (photo == null) return NotFound("photo does not exist");
+
+            if (photo.IsMain) return BadRequest("cannot delete main photo");
+
+            if(photo.PublicId != null)
+            {
+                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+
+                if (result.Error != null) return BadRequest(result.Error.Message);
+            }
+
+            user.Photos.Remove(photo);    
+
+            if (await _userRepository.SaveAllAsync()) return Ok();
+
+            return BadRequest("there was an error deleteing photo");
+
+        }
 
 
         
