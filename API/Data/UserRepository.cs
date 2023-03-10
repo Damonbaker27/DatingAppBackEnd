@@ -32,7 +32,7 @@ namespace API.Data
         {
             //eagerly load the photos as well.
             var user = await _context.Users.Include(p => p.Photos)
-                .SingleOrDefaultAsync(x => x.UserName == username);
+                .SingleOrDefaultAsync(x => x.UserName == username.ToLower());
 
             return user == null ? null : user;
 

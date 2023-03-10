@@ -15,12 +15,14 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IUserRepository _userRepository;
 
         //Inject datacontext class into controller 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountController(DataContext context, ITokenService tokenService, IUserRepository userRepository)
         {
             _context = context;
             _tokenService = tokenService;
+            _userRepository = userRepository;
         }
 
 
@@ -53,9 +55,8 @@ namespace API.Controllers
         [HttpPost("login")] // POST: api/account/login
         public async Task<ActionResult<UserDto>> login(LoginDto loginDto)
         {
-            
-            var user = await _context.Users.SingleOrDefaultAsync(x=> 
-                x.UserName == loginDto.UserName);
+
+            var user = await _userRepository.GetByNameAsync(loginDto.UserName);
 
             if (user == null) return Unauthorized("Invalid Username");
 
@@ -71,7 +72,8 @@ namespace API.Controllers
             return new UserDto
             {
                 UserName = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
 
         }

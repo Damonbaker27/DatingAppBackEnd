@@ -141,6 +141,7 @@ namespace API.Controllers
 
             if (photo.IsMain) return BadRequest("cannot delete main photo");
 
+            //check if cloud photo
             if(photo.PublicId != null)
             {
                 var result = await _photoService.DeletePhotoAsync(photo.PublicId);
