@@ -127,7 +127,7 @@ namespace API.Controllers
 
         }
 
-        [HttpDelete("delete-photo/{photoId}")]
+        [HttpDelete("delete-photo/{photoId}")] //DELETE: api/users/delete-photo/{photoId}
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
 

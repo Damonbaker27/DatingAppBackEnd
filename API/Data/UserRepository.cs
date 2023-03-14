@@ -5,6 +5,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Identity.Client;
 
 namespace API.Data
 {
@@ -18,7 +19,7 @@ namespace API.Data
             _context = context;
             _mapper = mapper;
         }
-
+     
 
         public async Task<AppUser> GetByIdAsync(int id)
         {
@@ -62,6 +63,7 @@ namespace API.Data
 
         public async Task<bool> SaveAllAsync()
         {
+            //turn into boolean
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -70,8 +72,11 @@ namespace API.Data
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        
+        public async Task<bool> UserExist(string userName)
+        {
+            if (userName!= null) return await _context.Users.AnyAsync(x => x.UserName == userName.ToLower());
 
-
+            return false;
+        }
     }
 }
