@@ -27,7 +27,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 //use the new middleware
-
 app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())

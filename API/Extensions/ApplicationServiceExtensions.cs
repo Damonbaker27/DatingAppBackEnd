@@ -12,16 +12,23 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration config)
         {
 
+            //use sql server
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(config.GetConnectionString("DatingAppConnectionString"));
             });
 
+            //set the cors policy to allow any request
             services.AddCors(options => options.AddPolicy("DefaultCors", policy =>
                 policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
             
+            //allow user repository to be injected
             services.AddScoped<IUserRepository, UserRepository>();
+
+            //add JWT token service
             services.AddScoped<ITokenService, TokenService>();
+
+            //add mapping for entities to dtos
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
             //add settings cloudinary config file to services container
