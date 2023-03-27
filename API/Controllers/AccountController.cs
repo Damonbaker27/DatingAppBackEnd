@@ -18,8 +18,7 @@ namespace API.Controllers
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-
-        //Inject datacontext class into controller 
+ 
         public AccountController(DataContext context, ITokenService tokenService, IUserRepository userRepository, IMapper mapper)
         {
             _context = context;
