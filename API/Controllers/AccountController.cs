@@ -60,7 +60,10 @@ namespace API.Controllers
 
             var user = await _userRepository.GetByNameAsync(loginDto.UserName);
 
-            if (user == null) return Unauthorized("Invalid Username");
+            if (user == null)
+            {
+                return Unauthorized("Invalid Username");
+            }
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
 
