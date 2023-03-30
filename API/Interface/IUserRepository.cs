@@ -8,6 +8,7 @@ namespace API.Interface
     {
 
         void Update(AppUser user);
+        void DeleteUser(AppUser user);
 
         Task<bool> UserExist(string userName);
 
@@ -22,6 +23,7 @@ namespace API.Interface
         Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams);
 
         Task<MemberDTO> GetMemberAsync(string username);
+
 
 
 

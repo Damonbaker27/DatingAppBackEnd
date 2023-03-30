@@ -75,6 +75,11 @@ namespace API.Data
             _context.Entry(user).State = EntityState.Modified;
         }
 
+        public void DeleteUser(AppUser user)
+        {
+            _context.Entry(user).State = EntityState.Deleted;
+        }
+
         public async Task<bool> UserExist(string userName)
         {
             if (userName!= null) return await _context.Users.AnyAsync(x => x.UserName == userName.ToLower());

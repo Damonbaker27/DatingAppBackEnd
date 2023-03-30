@@ -18,20 +18,25 @@ namespace API.Controllers
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
  
-        public AccountController(DataContext context, ITokenService tokenService, IUserRepository userRepository, IMapper mapper)
+        public AccountController(DataContext context, ITokenService tokenService, IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
         {
             _context = context;
             _tokenService = tokenService;
             _userRepository = userRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
 
         [HttpPost("register")] //  POST: api/account/register
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
+            if (await UserExists(registerDto.UserName))
+            {
+                return BadRequest("Username is taken");
+            }
 
             var user = _mapper.Map<AppUser>(registerDto);
                       
@@ -83,6 +88,42 @@ namespace API.Controllers
             };
 
         }
+
+
+        [HttpDelete("delete/{username}")]
+        public async Task<ActionResult> Delete(string username)
+        {
+            var user = await _userRepository.GetByNameAsync(username);
+
+            if (user == null)
+            {
+                return BadRequest("User Does not exist.");
+            }
+
+            foreach (var photo in user.Photos)
+            {
+                if(photo.PublicId != null)
+                {
+                   await _photoService.DeletePhotoAsync(photo.PublicId);
+                }           
+
+            }
+
+            _userRepository.DeleteUser(user);
+
+            if (await _userRepository.SaveAllAsync())
+            {
+                return Ok("Success!");
+            }
+
+
+
+            return BadRequest("there was an error deleting account");
+
+        }
+
+
+
 
 
         private async Task<bool> UserExists(string userName)
