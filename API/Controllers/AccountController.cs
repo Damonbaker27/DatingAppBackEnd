@@ -13,16 +13,15 @@ using System.Text;
 namespace API.Controllers
 {
     public class AccountController :BaseApiController
-    {
-        private readonly DataContext _context;
+    {       
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
  
-        public AccountController(DataContext context, ITokenService tokenService, IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
+        public AccountController( ITokenService tokenService, IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
         {
-            _context = context;
+            
             _tokenService = tokenService;
             _userRepository = userRepository;
             _mapper = mapper;
@@ -46,9 +45,9 @@ namespace API.Controllers
             user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
             user.PasswordSalt = hmac.Key;
 
-            _context.Users.Add(user);
+            _userRepository.AddUser(user);
 
-            await _context.SaveChangesAsync();
+            await _userRepository.SaveAllAsync();
 
             return new UserDto 
             {
@@ -100,6 +99,7 @@ namespace API.Controllers
                 return BadRequest("User Does not exist.");
             }
 
+            //delete each photo
             foreach (var photo in user.Photos)
             {
                 if(photo.PublicId != null)
@@ -113,17 +113,12 @@ namespace API.Controllers
 
             if (await _userRepository.SaveAllAsync())
             {
-                return Ok("Success!");
+                return Ok();
             }
-
-
 
             return BadRequest("there was an error deleting account");
 
         }
-
-
-
 
 
         private async Task<bool> UserExists(string userName)

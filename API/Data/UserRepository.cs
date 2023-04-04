@@ -50,10 +50,18 @@ namespace API.Data
 
         public async Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams)
         {
-            var query = _context.Users
-                .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider);
+            var query = _context.Users.AsQueryable();
 
-            return await PagedList<MemberDTO>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+            //exclude the user making the request from query.
+            query = query.Where(x => x.UserName != userParams.CurrentUsername);
+            
+            //exclude same gender
+            //query = query.Where(x => x.Gender == userParams.Gender);
+
+            return await PagedList<MemberDTO>.CreateAsync(
+                query.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider), 
+                userParams.PageNumber, 
+                userParams.PageSize);
                 
         }
 
@@ -73,6 +81,11 @@ namespace API.Data
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
+        }
+
+        public void AddUser(AppUser user)
+        {
+            _context.Users.Add(user);
         }
 
         public void DeleteUser(AppUser user)

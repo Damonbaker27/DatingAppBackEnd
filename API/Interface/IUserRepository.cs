@@ -10,6 +10,8 @@ namespace API.Interface
         void Update(AppUser user);
         void DeleteUser(AppUser user);
 
+        void AddUser(AppUser user);
+
         Task<bool> UserExist(string userName);
 
         Task<bool> SaveAllAsync();

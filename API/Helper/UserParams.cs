@@ -17,6 +17,10 @@
 
         }
 
+        public string? CurrentUsername { get; set; }
+
+        public string? Gender { get; set; }
+
 
     }
 }

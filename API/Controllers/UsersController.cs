@@ -34,6 +34,17 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<MemberDTO>>> GetUsers([FromQuery]UserParams userParams)
         {
+
+            var currentUser = await _userRepository.GetByNameAsync(User.GetUsername());
+
+            userParams.CurrentUsername = currentUser.UserName;
+
+            if (string.IsNullOrEmpty(userParams.Gender))
+            {
+                //if no gender provided get from the current user
+                userParams.Gender = currentUser.Gender == "male" ? "female" : "male";
+            }
+
             var users = await _userRepository.GetMembersAsync(userParams);
 
             // add the new header to the response
@@ -93,6 +104,7 @@ namespace API.Controllers
                 return BadRequest(result.Error.Message);
             }
 
+            //create the photo object
             var photo = new Photo
             {
                 Url = result.SecureUrl.AbsoluteUri,
