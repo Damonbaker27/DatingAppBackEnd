@@ -4,6 +4,7 @@ using API.Helper;
 using API.Interface;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CloudinaryDotNet.Actions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Identity.Client;
@@ -54,9 +55,18 @@ namespace API.Data
 
             //exclude the user making the request from query.
             query = query.Where(x => x.UserName != userParams.CurrentUsername);
-            
+
             //exclude same gender
-            //query = query.Where(x => x.Gender == userParams.Gender);
+            query = query.Where(x => x.Gender == userParams.Gender);
+
+
+            var minAge = DateOnly.FromDateTime(DateTime.Now).AddYears(-userParams.MinAge).AddDays(-1);  
+            
+            var maxAge = DateOnly.FromDateTime(DateTime.Now).AddYears(-userParams.MaxAge).AddDays(-364);
+            
+            //select only user specified age range
+            query = query.Where(x => x.DateOfBirth <= minAge && x.DateOfBirth >= maxAge);
+
 
             return await PagedList<MemberDTO>.CreateAsync(
                 query.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider), 
