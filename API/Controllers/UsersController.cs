@@ -18,7 +18,6 @@ namespace API.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
@@ -103,15 +102,14 @@ namespace API.Controllers
             {
                 return BadRequest(result.Error.Message);
             }
-
-            //create the photo object
+       
             var photo = new Photo
             {
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId
             };
 
-            //checks if photo is the first one
+            //checks if photo is the first one as set it to main photo.
             if(user.Photos.Count == 0)
             {
                 photo.IsMain= true;
@@ -119,7 +117,7 @@ namespace API.Controllers
            
             user.Photos.Add(photo);
 
-            //return the mapped Photo DTO
+            //return the mapped Photo DTO if successful.
             if (await _userRepository.SaveAllAsync())
             {
                 return CreatedAtAction(nameof(GetUser), 

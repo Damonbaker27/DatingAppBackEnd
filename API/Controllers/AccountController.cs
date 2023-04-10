@@ -20,8 +20,7 @@ namespace API.Controllers
         private readonly IPhotoService _photoService;
  
         public AccountController( ITokenService tokenService, IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
-        {
-            
+        {  
             _tokenService = tokenService;
             _userRepository = userRepository;
             _mapper = mapper;
@@ -49,11 +48,12 @@ namespace API.Controllers
 
             await _userRepository.SaveAllAsync();
 
-            return new UserDto 
+            return new UserDto
             {
                 UserName = user.UserName,
                 KnownAs = user.KnownAs,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                Gender = user.Gender
             };
 
         }
@@ -83,7 +83,9 @@ namespace API.Controllers
                 UserName = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
-                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                Gender = user.Gender
+                 
             };
 
         }
