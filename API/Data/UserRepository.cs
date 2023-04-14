@@ -8,6 +8,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Identity.Client;
+using System.Linq.Expressions;
 
 namespace API.Data
 {
@@ -66,6 +67,25 @@ namespace API.Data
             
             //select only user specified age range
             query = query.Where(x => x.DateOfBirth <= minAge && x.DateOfBirth >= maxAge);
+
+            
+            switch (userParams.OrderBy)
+            {
+                case "lastActive":
+                    query = query.OrderByDescending(x => x.LastActive);
+                    break;
+
+                case "name":
+                    query = query.OrderBy(x => x.UserName); 
+                    break;
+
+            }
+
+               
+            
+            
+
+            
 
 
             return await PagedList<MemberDTO>.CreateAsync(
