@@ -3,6 +3,7 @@ using API.DTO;
 using API.Entities;
 using API.Interface;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +58,7 @@ namespace API.Controllers
             };
 
         }
-
+    
         [HttpPost("login")] // POST: api/account/login
         public async Task<ActionResult<UserDto>> login(LoginDto loginDto)
         {

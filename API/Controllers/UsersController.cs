@@ -8,13 +8,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace API.Controllers
 {
-
     [Authorize]
     public class UsersController : BaseApiController
     {
@@ -58,7 +58,7 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDTO>> GetUser(string username)
         {
             return await _userRepository.GetMemberAsync(username);           
-          
+         
         }
 
         [HttpPut]

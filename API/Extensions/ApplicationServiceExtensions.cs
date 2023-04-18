@@ -2,6 +2,7 @@
 using API.Helper;
 using API.Interface;
 using API.Services;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 
@@ -36,6 +37,9 @@ namespace API.Extensions
             
             //allow photoservice to be injectable.
             services.AddScoped<IPhotoService, PhotoService>();
+
+            //add actionfilter
+            services.AddScoped<LogUserActivity>();
 
             return services;
         }

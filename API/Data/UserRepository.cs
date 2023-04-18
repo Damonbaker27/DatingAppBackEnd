@@ -75,18 +75,16 @@ namespace API.Data
                     query = query.OrderByDescending(x => x.LastActive);
                     break;
 
-                case "name":
+                case "a-z":
                     query = query.OrderBy(x => x.UserName); 
                     break;
 
+                case "z-a":
+                    query = query.OrderByDescending(x => x.UserName);
+                    break;
             }
 
-               
-            
-            
-
-            
-
+                       
 
             return await PagedList<MemberDTO>.CreateAsync(
                 query.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider), 
