@@ -75,13 +75,10 @@ namespace API.Data
                     query = query.OrderByDescending(x => x.LastActive);
                     break;
 
-                case "a-z":
-                    query = query.OrderBy(x => x.UserName); 
+                case "new":
+                    query = query.OrderByDescending(x => x.Created); 
                     break;
-
-                case "z-a":
-                    query = query.OrderByDescending(x => x.UserName);
-                    break;
+             
             }
 
                        
