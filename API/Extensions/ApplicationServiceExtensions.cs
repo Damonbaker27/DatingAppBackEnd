@@ -26,6 +26,8 @@ namespace API.Extensions
             //allow user repository to be injected
             services.AddScoped<IUserRepository, UserRepository>();
 
+            services.AddScoped<ILikesRepository, UserLikeRepository>();
+
             //add JWT token service
             services.AddScoped<ITokenService, TokenService>();
 

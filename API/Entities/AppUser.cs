@@ -36,21 +36,12 @@ namespace API.Entities
 
         public List<Photo> Photos { get; set; } = new();
 
+
+        //navigational property
         public List<UserLike> LikedByUsers { get; set; }
 
+        //nagivational property
         public List<UserLike> LikedUsers { get; set; }
-
-
-
-
-
-
-
-        public int GetAge()
-        {
-            return DateOfBirth.CalculateAge();
-        }
-
 
 
     }
