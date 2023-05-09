@@ -10,16 +10,15 @@ namespace API.Data
     public class UserLikeRepository : ILikesRepository
     {
         private DataContext _context;
-        private Mapper _mapper;
 
-        public UserLikeRepository(DataContext dataContext, Mapper mapper)
+        public UserLikeRepository(DataContext dataContext)
         {
             _context = dataContext;
-            _mapper = mapper;
+            
         }
 
         /// <summary>
-        /// gets The userLike entity that matches the passed in primary key values.
+        /// Returns a specific single like entity
         /// </summary>
         /// <param name="sourceUserId"></param>
         /// <param name="likedUserId"></param>
@@ -33,7 +32,7 @@ namespace API.Data
 
 
         /// <summary>
-        /// get either the users liked or liked by users
+        /// gets either the likes made by the user or the likes targeting that user based on the predicate.
         /// </summary>
         /// <param name="predicate"></param>
         /// <param name="userId"></param>
@@ -60,7 +59,7 @@ namespace API.Data
                 users = likes.Select(like => like.SourceUser);
             }
 
-            // Return a newly created DTO.
+            // Return a newly created like DTO.
             return await users.Select(user => new UserLikeDTO
             {
                 UserName = user.UserName,
@@ -72,8 +71,6 @@ namespace API.Data
             }).ToListAsync();
 
 
-
-
         }
 
         public async Task<AppUser> GetUserWithLikes(int userId)
@@ -82,5 +79,23 @@ namespace API.Data
                 .Include(x => x.LikedUsers)
                 .FirstOrDefaultAsync(x => x.Id == userId);
         }
+
+
+        public void AddLike(UserLike like) 
+        {
+            _context.likes.Add(like);
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {     
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public void RemoveLike(UserLike like)
+        {
+            _context.Entry(like).State= EntityState.Deleted;
+        }
+
+ 
     }
 }
