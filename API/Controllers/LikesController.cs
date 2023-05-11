@@ -21,43 +21,44 @@ namespace API.Controllers
         }
 
 
-
-
-        [HttpGet("get-likes")]
-        public async Task<IEnumerable<UserLikeDTO>> GetAllLikes([FromQuery] int id,  string predicate)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserLikeDTO>>> GetAllLikes(string predicate)
         {
 
-            var likes = await _LikeRepository.GetUsersLikes(predicate, id);
+            var users = await _LikeRepository.GetUsersLikes(predicate, User.GetId());
 
-            return likes;
+            return Ok(users);
 
         }
 
-        [HttpPost("add-like")]
+        [HttpPost("{username}")]
         public async Task<ActionResult>AddLike(string username)
         {
 
-            AppUser sourceUser = await _userRepo.GetByNameAsync(User.GetUsername());
+            AppUser sourceUser = await _LikeRepository.GetUserWithLikes(User.GetId());
             AppUser targetUser = await _userRepo.GetByNameAsync(username);
+            
 
+            if(targetUser == null) return NotFound(); 
 
             if (username == sourceUser.UserName) return BadRequest("you cannot like yourself.");
 
-            var like = new UserLike
-            {
-                SourceUser = sourceUser,
-                SourceUserId = sourceUser.Id,
-                TargetUser = targetUser,
+            var userLike = await _LikeRepository.GetUserLike(sourceUser.Id, targetUser.Id);
+
+            if (userLike != null) return BadRequest("user has been liked already");
+
+            
+            userLike = new UserLike
+            {             
+                SourceUserId = sourceUser.Id,              
                 TargetUserId = targetUser.Id
             };
 
+            sourceUser.LikedUsers.Add(userLike);
 
-            _LikeRepository.AddLike(like);
+            _LikeRepository.AddLike(userLike);
 
-            if(await _LikeRepository.SaveAllAsync())
-            {
-                return Ok("User Liked");
-            }
+            if(await _LikeRepository.SaveAllAsync()) return Ok("User Liked");   
 
 
             return BadRequest("something went wrong");

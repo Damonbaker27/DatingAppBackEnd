@@ -73,6 +73,7 @@ namespace API.Data
 
         }
 
+        // returns the user and will include all of the likes made by that user.
         public async Task<AppUser> GetUserWithLikes(int userId)
         {
             return await _context.Users
